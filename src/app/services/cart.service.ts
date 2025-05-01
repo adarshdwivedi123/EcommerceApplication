@@ -5,7 +5,9 @@ import { Subject } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
+//ccheck a gadbad here
 export class CartService {
+
 cartItems:CartItem[]=[];
 //we can use subject to publish  events in our code the event will be sent to all the subscribers
 totalPrce:Subject<number>=new Subject<number>();
@@ -30,8 +32,8 @@ totalQuantity:Subject<number>=new Subject<number>();
       // }
 
       
-        //check id we fiund it
-        // alreadyExistsInCart=(existingCartItem!=undefined)
+      //  check id we fiund it
+        alreadyExistsInCart=(existingCartItem!=undefined)
     }
     if(alreadyExistsInCart)
     {
@@ -55,9 +57,11 @@ totalQuantity:Subject<number>=new Subject<number>();
     //publuish the new vlaues ..all subscibes will recive the new data
 
     this.totalPrce.next(totalPriceValue);
+    console.log('total price',this.totalPrce);
     this.totalQuantity.next(totalQuantityValue);
+    
 
- 
+    this.logCartData(totalPriceValue, totalQuantityValue);
 
 
   }
@@ -70,4 +74,25 @@ totalQuantity:Subject<number>=new Subject<number>();
 
       
     }
+    decrementQuantity(theCartItem: CartItem) {
+      theCartItem.quantity--;
+        if(theCartItem.quantity === 0)
+        {
+          this.remove(theCartItem);
+        }
+        else{
+          this.computeCartTotals();
+        }
+    }
+  remove(theCartItem: CartItem) {
+    //get index of items in the array
+    const itemIndex=this.cartItems.findIndex(tempCartItem =>tempCartItem.id === theCartItem.id);
+    //if found remove the item from the array at the given index
+    if(itemIndex >-1)
+    {
+      this.cartItems.splice(itemIndex,1);
+      this.computeCartTotals();
+    }
+
+  }
 }
