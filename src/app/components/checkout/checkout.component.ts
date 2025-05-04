@@ -5,6 +5,7 @@ import { Luv2ShopFormService } from '../../services/luv2-shop-form.service';
 import { State } from '../../common/state';
 import { Country } from '../../common/country';
 import { Luv2ShopValidators } from '../../validators/luv2-shop-validators';
+import { CartService } from '../../services/cart.service';
 
 @Component({
   selector: 'app-checkout',
@@ -15,7 +16,7 @@ import { Luv2ShopValidators } from '../../validators/luv2-shop-validators';
 })
 export class CheckoutComponent implements OnInit {
 
-
+  
   checkoutFromGroup!: FormGroup;
   totalPrice: number = 0;
   totalQuantity: number = 0;
@@ -25,9 +26,11 @@ export class CheckoutComponent implements OnInit {
   billingAddressStates: State[] = [];
   countries: Country[] = [];
 
-  constructor(private formBuilder: FormBuilder, private luv2ShopFormServices: Luv2ShopFormService) { }
+  constructor(private formBuilder: FormBuilder, private luv2ShopFormServices: Luv2ShopFormService,private cartService:CartService ) { }
 
   ngOnInit(): void {
+
+    this.reviewCartDetails();
     this.checkoutFromGroup = this.formBuilder.group({
       customer: this.formBuilder.group({
         firstName: new FormControl('', [Validators.required, Validators.minLength(2), Luv2ShopValidators.notOnlyWhitespace]),
@@ -82,6 +85,21 @@ export class CheckoutComponent implements OnInit {
       this.countries = data;
     });
 
+
+
+  }
+  reviewCartDetails() {
+    //subscrbie to cartSerice totalquanity and totalPrice
+    this.cartService.totalQuantity.subscribe((totalQuantity)=>{
+        this.totalQuantity=totalQuantity
+    });
+
+    //subscribr  for totalPrice
+    this.cartService.totalPrce.subscribe((totalPrice)=>{
+      this.totalPrice=totalPrice
+
+    })
+    
   }
 
   //getter , method acces form control
