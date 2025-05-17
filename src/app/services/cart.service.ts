@@ -12,8 +12,23 @@ cartItems:CartItem[]=[];
 //we can use subject to publish  events in our code the event will be sent to all the subscribers
 totalPrce:Subject<number>=new BehaviorSubject<number>(0);
 totalQuantity:Subject<number>=new BehaviorSubject<number>(0);
+storage:Storage=localStorage;
 
-  constructor() { }
+  constructor() { 
+    //read data from storage
+    let data= JSON.parse(this.storage.getItem('cartItems')!);
+    if(data != null)
+    {
+        this.cartItems=data;
+        //compute total based on  the data that is read from storage
+        this.computeCartTotals();
+    }
+  }
+
+persistCartItems(){
+    this.storage.setItem('cartItems',JSON.stringify(this.cartItems));
+
+}
   addToCart(theCartItem:CartItem){
     //check if we already have the item in our cart
     let alreadyExistsInCart:boolean =false;
@@ -62,6 +77,9 @@ totalQuantity:Subject<number>=new BehaviorSubject<number>(0);
     
 
     this.logCartData(totalPriceValue, totalQuantityValue);
+
+    //persist cart data 
+    this.persistCartItems();
 
 
   }
