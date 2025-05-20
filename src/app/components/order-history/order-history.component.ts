@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { OrderHistory } from '../../common/order-history';
+import { OrderHistoryService } from '../../services/order-history.service';
+import { CommonModule, DatePipe, NgFor, NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-order-history',
   standalone: true,
-  imports: [],
+  imports: [NgIf,NgFor,CommonModule],
   templateUrl: './order-history.component.html',
   styleUrl: './order-history.component.css'
 })
@@ -12,10 +14,22 @@ export class OrderHistoryComponent implements OnInit{
 
   orderHistoryList:OrderHistory[]=[];
   storage:Storage=sessionStorage;
-  constructor(){}
+  
+  constructor(private orderHistoryService:OrderHistoryService ){
+
+  }
 
   ngOnInit(): void {
-    throw new Error('Method not implemented.');
+      this.handleOrderHistory();
+  }
+  handleOrderHistory() {
+    //read the user email from browser storage
+    const theEmail=JSON.parse(this.storage.getItem('userEmail')!);
+    //retrive  data from the servirs
+
+    this.orderHistoryService.getOrderHistory(theEmail).subscribe((data)=>{
+        this.orderHistoryList=data._embedded.orders;
+    })
   }
 
 }

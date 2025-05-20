@@ -28,6 +28,15 @@ export const routes: Routes = [
     {path:'search/:keyword',component:ProductListComponent},
     {path:'category/:id',component:ProductListComponent},
     {path:'category',component:ProductListComponent},
+    {path:'order-history',component:ProductListComponent ,canActivate:[OktaAuthGuard],
+      data:{
+         onAuthRequired: (oktaAuth: any, injector: { get: (arg0: typeof Router) => any; }) => {
+      const router = injector.get(Router);
+      console.log(router)
+      router.navigate(['/login']);
+    }
+        }
+    },
     {path:'products',component:ProductListComponent},
     {path:'cart-details',component:CartDetailsComponent},
     {path:'checkout',component:CheckoutComponent},

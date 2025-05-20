@@ -14,13 +14,13 @@ private orderUrl='http://localhost:8080/api/orders'
   }
   getOrderHistory(theEmail:string):Observable<GetResponseOrderHistory>
     {
-            const orderHistoryUrl =`${this.orderUrl}//search/findByCustomerEmail?email=${theEmail}`;
+            const orderHistoryUrl =`${this.orderUrl}/search/findByCustomerEmailOrderByDateCreatedDesc?email=${theEmail}`;
             return this.httpClient.get<GetResponseOrderHistory>(orderHistoryUrl)
     }
 }
 
  interface GetResponseOrderHistory{
    _embedded:{
-    order:OrderHistory[];
+    orders:OrderHistory[];
    }
  }

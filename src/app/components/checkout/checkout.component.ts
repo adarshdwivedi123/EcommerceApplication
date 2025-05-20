@@ -31,16 +31,21 @@ export class CheckoutComponent implements OnInit {
   billingAddressStates: State[] = [];
   countries: Country[] = [];
 
+  storage:Storage=sessionStorage;
+
   constructor(private formBuilder: FormBuilder, private luv2ShopFormServices: Luv2ShopFormService,private cartService:CartService ,private  checkoutService:CheckoutService,private router:Router) { }
 
   ngOnInit(): void {
 
     this.reviewCartDetails();
+    //read the user's email address from browser  storage
+    const  theEmail= JSON.parse(this.storage.getItem('userEmail')!);
+
     this.checkoutFromGroup = this.formBuilder.group({
       customer: this.formBuilder.group({
         firstName: new FormControl('', [Validators.required, Validators.minLength(2), Luv2ShopValidators.notOnlyWhitespace]),
         lastName: new FormControl('', [Validators.required, Validators.minLength(2), Luv2ShopValidators.notOnlyWhitespace]),
-        email: new FormControl('',
+        email: new FormControl(theEmail,
           [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'), Luv2ShopValidators.notOnlyWhitespace])
       }),
 
