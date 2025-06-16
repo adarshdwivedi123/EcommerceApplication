@@ -31,9 +31,9 @@ export const routes: Routes = [
     {path:'order-history',component:ProductListComponent ,canActivate:[OktaAuthGuard],
       data:{
          onAuthRequired: (oktaAuth: any, injector: { get: (arg0: typeof Router) => any; }) => {
-      const router = injector.get(Router);
-      console.log(router)
-      router.navigate(['/login']);
+         const router = injector.get(Router);
+         console.log(router)
+         router.navigate(['/login']);
     }
         }
     },
