@@ -34,7 +34,7 @@ export const routes: Routes = [
          const router = injector.get(Router);
          console.log(router)
          router.navigate(['/login']);
-    }
+         }
         }
     },
     {path:'products',component:ProductListComponent},

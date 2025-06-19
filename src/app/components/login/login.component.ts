@@ -20,6 +20,10 @@ export class LoginComponent  implements OnInit{
         baseUrl:myAppConfig.oidc.issuer.split('/oauth2')[0],
         client:myAppConfig.oidc.clientId,
         redirectUri:myAppConfig.oidc.redirectUri,
+        features:{
+          router:false,
+
+        },
         authParams:{
           pkce:true,
           issuer:myAppConfig.oidc.issuer,
